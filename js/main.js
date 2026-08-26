@@ -171,6 +171,53 @@
     }
   }
 
+  /* ---------- Galería de fotos en la bola del hero ---------- */
+  function initHeroOrbGallery() {
+    var wrap = document.querySelector(".hero-orb-wrap");
+    var gallery = document.getElementById("hero-orb-gallery");
+    var dotsWrap = document.getElementById("hero-orb-dots");
+    if (!wrap || !gallery || !dotsWrap) return;
+
+    var slides = gallery.querySelectorAll(".hero-orb-slide");
+    if (slides.length < 2) return;
+
+    var current = 0;
+    var timer = null;
+
+    slides.forEach(function (_, i) {
+      var dot = document.createElement("button");
+      dot.type = "button";
+      dot.setAttribute("role", "tab");
+      dot.setAttribute("aria-label", "Ver foto " + (i + 1) + " de la academia");
+      if (i === 0) dot.classList.add("is-active");
+      dot.addEventListener("click", function () {
+        goTo(i);
+        restart();
+      });
+      dotsWrap.appendChild(dot);
+    });
+    var dots = dotsWrap.querySelectorAll("button");
+
+    function goTo(index) {
+      slides[current].classList.remove("is-active");
+      dots[current].classList.remove("is-active");
+      current = index;
+      slides[current].classList.add("is-active");
+      dots[current].classList.add("is-active");
+    }
+    function start() {
+      timer = setInterval(function () { goTo((current + 1) % slides.length); }, 4000);
+    }
+    function stop() { clearInterval(timer); }
+    function restart() { stop(); start(); }
+
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      start();
+      wrap.addEventListener("mouseenter", stop);
+      wrap.addEventListener("mouseleave", start);
+    }
+  }
+
   /* ---------- Header: sombra al hacer scroll ---------- */
   function initHeaderScrollState() {
     var header = document.querySelector(".site-header");
@@ -211,6 +258,7 @@
     initMobileNav();
     initScrollReveal();
     initTestimonialDots();
+    initHeroOrbGallery();
     initHeaderScrollState();
     initHeaderOffsets();
     initFooterYear();

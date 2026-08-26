@@ -41,7 +41,7 @@
     "streetAddress": "José Veloz y Juan Velasco (Esquina)",
     "addressCountry": "EC"
   },
-  "sameAs": ["https://www.instagram.com/academia_creativa_ec"],
+  "sameAs": ["https://www.instagram.com/academia_creativa_ec", "https://www.facebook.com/people/Academia-de-Arte-y-M%C3%BAsica-Creativa/61576514901192/"],
   "openingHoursSpecification": [
     {"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"08:00","closes":"12:00"},
     {"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"15:00","closes":"19:00"},
@@ -55,7 +55,7 @@
 <div class="site-header-wrap" id="header-wrap">
 <!-- Barra de anuncio / urgencia -->
 <div class="announce-bar">
-  <p>🎨 Clase de prueba <strong>GRATIS</strong></p>
+  <p>🎨 Clase de prueba <strong>GRATIS</strong> — ¡Sé parte de nuestra comunidad! 🎶</p>
 </div>
 
 <!-- Header -->
@@ -82,12 +82,12 @@
     </nav>
 
     <div class="header-actions">
-      <!-- Redes sociales: solo iconos por ahora, enlaces pendientes -->
+      <!-- Redes sociales -->
       <div class="header-social">
-        <a href="#" class="social-icon-header" aria-label="Facebook de Creativa Academia (próximamente)">
+        <a href="https://www.facebook.com/people/Academia-de-Arte-y-M%C3%BAsica-Creativa/61576514901192/" target="_blank" rel="noopener" class="social-icon-header" aria-label="Facebook de Creativa Academia">
           <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="6"/><path d="M14 8.2h-1.3c-.7 0-1.2.5-1.2 1.3V11h2.4l-.3 2.4h-2.1V20h-2.5v-6.6H7v-2.4h2v-1.7c0-2 1.2-3.3 3.2-3.3H14v2.2Z" fill="currentColor" stroke="none"/></svg>
         </a>
-        <a href="#" class="social-icon-header" aria-label="Instagram de Creativa Academia (próximamente)">
+        <a href="https://www.instagram.com/academia_creativa_ec" target="_blank" rel="noopener" class="social-icon-header" aria-label="Instagram de Creativa Academia">
           <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="6"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
         </a>
       </div>
@@ -134,20 +134,33 @@
         <p class="hero-microtrust">Sin costo &middot; Sin compromiso &middot; Cupos limitados cada semana</p>
       </div>
 
-      <div class="hero-visual" aria-hidden="true">
-        <div class="hero-card hero-card-1">
+      <div class="hero-visual">
+        <div class="hero-card hero-card-1" aria-hidden="true">
           <span class="hero-card-emoji">🎸</span>
           <span>Artes Sonoras</span>
         </div>
-        <div class="hero-card hero-card-2">
+        <div class="hero-card hero-card-2" aria-hidden="true">
           <span class="hero-card-emoji">🎨</span>
           <span>Artes Visuales</span>
         </div>
-        <div class="hero-card hero-card-3">
+        <div class="hero-card hero-card-3" aria-hidden="true">
           <span class="hero-card-emoji">✨</span>
           <span>A tu propio ritmo</span>
         </div>
-        <div class="hero-orb"></div>
+        <div class="hero-float-icon hero-float-1" aria-hidden="true">🎻</div>
+        <div class="hero-float-icon hero-float-2" aria-hidden="true">🖌️</div>
+        <div class="hero-float-icon hero-float-3" aria-hidden="true">🎹</div>
+        <div class="hero-float-icon hero-float-4" aria-hidden="true">🥁</div>
+
+        <div class="hero-orb-wrap">
+          <div class="hero-orb" id="hero-orb-gallery">
+            <img class="hero-orb-slide is-active" src="https://picsum.photos/seed/creativa-hero-1/500/500" alt="Foto de ejemplo de la academia" loading="eager" decoding="async">
+            <img class="hero-orb-slide" src="https://picsum.photos/seed/creativa-hero-2/500/500" alt="Foto de ejemplo de la academia" loading="lazy" decoding="async">
+            <img class="hero-orb-slide" src="https://picsum.photos/seed/creativa-hero-3/500/500" alt="Foto de ejemplo de la academia" loading="lazy" decoding="async">
+            <img class="hero-orb-slide" src="https://picsum.photos/seed/creativa-hero-4/500/500" alt="Foto de ejemplo de la academia" loading="lazy" decoding="async">
+          </div>
+          <div class="hero-orb-dots" id="hero-orb-dots" role="tablist" aria-label="Seleccionar foto"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -232,6 +245,7 @@
             <li>Violín</li>
             <li>Batería</li>
             <li>Piano</li>
+            <li>Bajo</li>
           </ul>
         </article>
 
@@ -248,8 +262,6 @@
           </ul>
         </article>
       </div>
-
-      <p class="disciplines-cta">¿No sabes por cuál empezar? <a href="#" class="js-whatsapp-cta" data-source="disciplinas">Prueba una clase gratis y descúbrelo →</a></p>
     </div>
   </section>
 
@@ -378,24 +390,28 @@
   <section class="cta-final" id="cta-urgente" aria-labelledby="cta-final-title">
     <div class="cta-final-decor" aria-hidden="true"></div>
     <div class="container cta-final-inner">
-      <h2 id="cta-final-title">Los cupos de este mes son limitados 🎉</h2>
-      <p>Cada grupo tiene espacio reducido para garantizar atención personalizada. Agenda hoy tu clase de prueba gratis y asegura tu lugar.</p>
-      <p class="cta-final-bonus">🎁 Descuento especial si te inscribes junto a otro estudiante.</p>
-      <a href="#" class="btn btn-primary btn-xl js-whatsapp-cta" data-source="cta-final">
-        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.6 6.32A7.85 7.85 0 0 0 12.05 4a7.94 7.94 0 0 0-6.9 11.9L4 20l4.2-1.1a7.9 7.9 0 0 0 3.85 1h.01a7.94 7.94 0 0 0 5.54-13.58ZM12.06 18.4h-.01a6.6 6.6 0 0 1-3.36-.92l-.24-.14-2.5.66.67-2.44-.16-.25a6.6 6.6 0 1 1 12.24-3.51 6.56 6.56 0 0 1-6.64 6.6Zm3.6-4.94c-.2-.1-1.17-.58-1.35-.64s-.32-.1-.45.1-.51.64-.62.77-.23.15-.42.05a5.4 5.4 0 0 1-1.6-.98 6 6 0 0 1-1.1-1.37c-.12-.2 0-.3.09-.4.09-.1.2-.24.3-.36a1.3 1.3 0 0 0 .19-.33.36.36 0 0 0 0-.35c-.05-.1-.45-1.07-.61-1.47-.16-.38-.33-.33-.45-.34h-.39a.74.74 0 0 0-.54.25 2.24 2.24 0 0 0-.7 1.66c0 .98.71 1.93.81 2.06s1.4 2.14 3.4 3 2 .57 2.36.54a2 2 0 0 0 1.32-.93 1.63 1.63 0 0 0 .11-.93c-.05-.09-.18-.14-.38-.24Z"/></svg>
-        Reservar mi clase de prueba
-      </a>
-
-      <div class="cta-final-map">
-        <iframe
-          src="https://www.google.com/maps?q=-1.6736379,-78.64679&z=17&output=embed"
-          title="Ubicación de Creativa Academia en el mapa"
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          allowfullscreen>
-        </iframe>
+      <div class="cta-final-text">
+        <h2 id="cta-final-title">Los cupos de este mes son limitados 🎉</h2>
+        <p>Cada grupo tiene espacio reducido para garantizar atención personalizada. Agenda hoy tu clase de prueba gratis y asegura tu lugar.</p>
+        <p class="cta-final-bonus">🎁 Descuento especial si te inscribes junto a otro estudiante.</p>
+        <a href="#" class="btn btn-primary btn-xl js-whatsapp-cta" data-source="cta-final">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.6 6.32A7.85 7.85 0 0 0 12.05 4a7.94 7.94 0 0 0-6.9 11.9L4 20l4.2-1.1a7.9 7.9 0 0 0 3.85 1h.01a7.94 7.94 0 0 0 5.54-13.58ZM12.06 18.4h-.01a6.6 6.6 0 0 1-3.36-.92l-.24-.14-2.5.66.67-2.44-.16-.25a6.6 6.6 0 1 1 12.24-3.51 6.56 6.56 0 0 1-6.64 6.6Zm3.6-4.94c-.2-.1-1.17-.58-1.35-.64s-.32-.1-.45.1-.51.64-.62.77-.23.15-.42.05a5.4 5.4 0 0 1-1.6-.98 6 6 0 0 1-1.1-1.37c-.12-.2 0-.3.09-.4.09-.1.2-.24.3-.36a1.3 1.3 0 0 0 .19-.33.36.36 0 0 0 0-.35c-.05-.1-.45-1.07-.61-1.47-.16-.38-.33-.33-.45-.34h-.39a.74.74 0 0 0-.54.25 2.24 2.24 0 0 0-.7 1.66c0 .98.71 1.93.81 2.06s1.4 2.14 3.4 3 2 .57 2.36.54a2 2 0 0 0 1.32-.93 1.63 1.63 0 0 0 .11-.93c-.05-.09-.18-.14-.38-.24Z"/></svg>
+          Reservar mi clase de prueba
+        </a>
       </div>
-      <a href="https://maps.app.goo.gl/7hgSMAmmTK8wdBhH8" target="_blank" rel="noopener" class="cta-final-map-link">Ver en Google Maps ↗</a>
+
+      <div class="cta-final-map-wrap">
+        <div class="cta-final-map">
+          <iframe
+            src="https://www.google.com/maps?q=-1.6736379,-78.64679&z=17&output=embed"
+            title="Ubicación de Creativa Academia en el mapa"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <a href="https://maps.app.goo.gl/7hgSMAmmTK8wdBhH8" target="_blank" rel="noopener" class="cta-final-map-link">Ver en Google Maps ↗</a>
+      </div>
     </div>
   </section>
 
@@ -408,7 +424,7 @@
       <img src="assets/logo-blanco.png" alt="Creativa Academia" width="180" height="147" loading="lazy">
       <p>Donde las artes se unen</p>
       <div class="footer-social">
-        <a href="#" class="social-icon" aria-label="Facebook de Creativa Academia (próximamente)">
+        <a href="https://www.facebook.com/people/Academia-de-Arte-y-M%C3%BAsica-Creativa/61576514901192/" target="_blank" rel="noopener" class="social-icon" aria-label="Facebook de Creativa Academia">
           <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M14 8.2h-1.3c-.7 0-1.2.5-1.2 1.3V11h2.4l-.3 2.4h-2.1V20h-2.5v-6.6H7v-2.4h2v-1.7c0-2 1.2-3.3 3.2-3.3H14v2.2Z" fill="currentColor" stroke="none"/></svg>
         </a>
         <a href="https://www.instagram.com/academia_creativa_ec" target="_blank" rel="noopener" class="social-icon" aria-label="Síguenos en Instagram">

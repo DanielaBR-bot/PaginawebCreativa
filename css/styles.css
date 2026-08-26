@@ -90,7 +90,8 @@ html, body { overflow-x: hidden; }
 .testimonials > *,
 .footer-inner > *,
 .steps > *,
-.header-inner > * { min-width: 0; }
+.header-inner > *,
+.cta-final-inner > * { min-width: 0; }
 
 /* Focus visibility (accesibilidad) */
 a:focus-visible, button:focus-visible, summary:focus-visible {
@@ -405,15 +406,45 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
   align-items: center;
   justify-content: center;
 }
-.hero-orb {
+.hero-orb-wrap {
   position: absolute;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.hero-orb {
+  position: relative;
   width: 260px; height: 260px;
   border-radius: 50%;
+  overflow: hidden;
   background: radial-gradient(circle at 35% 30%, var(--purple), var(--purple-darker));
-  opacity: 0.9;
+  box-shadow: var(--shadow-lg);
 }
+.hero-orb-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+.hero-orb-slide.is-active { opacity: 1; }
+
+.hero-orb-dots { display: flex; align-items: center; justify-content: center; gap: 7px; }
+.hero-orb-dots button {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  background: rgba(75,63,174,0.25);
+  transition: background 0.2s ease, width 0.2s ease;
+}
+.hero-orb-dots button.is-active { background: var(--purple-darker); width: 16px; border-radius: 6px; }
 .hero-card {
   position: absolute;
+  z-index: 2;
   background: var(--white);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
@@ -434,6 +465,27 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 @keyframes card-float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
+}
+
+.hero-float-icon {
+  position: absolute;
+  z-index: 2;
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: var(--white);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  animation: card-float 5s ease-in-out infinite;
+}
+.hero-float-1 { top: 32%; right: -2%; background: var(--mint); animation-delay: 0.6s; }
+.hero-float-2 { top: -2%; left: 30%; background: var(--skyblue); animation-delay: 1.8s; }
+.hero-float-3 { bottom: 28%; left: -4%; background: var(--tan); animation-delay: 2.6s; }
+.hero-float-4 { bottom: -2%; right: 20%; background: var(--purple); animation-delay: 3.4s; }
+@media (max-width: 480px) {
+  .hero-float-icon { width: 40px; height: 40px; font-size: 1.2rem; }
 }
 
 @media (min-width: 960px) {
@@ -531,9 +583,6 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
   padding: 9px 16px;
   border-radius: var(--radius-pill);
 }
-.disciplines-cta { margin-top: 32px; font-size: 1.05rem; font-weight: 600; }
-.disciplines-cta a { color: var(--pink-a11y); text-decoration: underline; text-underline-offset: 3px; }
-
 /* ---------- Testimonios ---------- */
 .testimonials {
   margin-top: 44px;
@@ -678,8 +727,8 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 .cta-final .btn { margin-top: 30px; }
 .cta-final .btn-primary { background: var(--white); color: var(--purple-darker); }
 .cta-final .btn-primary:hover { background: var(--skyblue); }
+.cta-final-map-wrap { margin-top: 40px; }
 .cta-final-map {
-  margin-top: 40px;
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-lg);
@@ -694,6 +743,19 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
   text-decoration: underline;
 }
 .cta-final-map-link:hover, .cta-final-map-link:focus-visible { color: var(--white); }
+
+@media (min-width: 860px) {
+  .cta-final-inner {
+    max-width: 1080px;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: center;
+    gap: 50px;
+    text-align: left;
+  }
+  .cta-final-map-wrap { margin-top: 0; }
+  .cta-final-map iframe { height: 260px; }
+}
 
 /* ---------- Footer ---------- */
 .site-footer { background: var(--ink); color: rgba(255,255,255,0.85); padding-top: 60px; }

@@ -57,7 +57,8 @@ Academia-Creativa.png, Inspo.png  # Referencias que Daniela subió a la carpeta 
 - **Teléfono alterno** (solo mencionado en footer, no es CTA): 096 352 2100.
 - **Dirección:** José Veloz y Juan Velasco (Esquina).
 - **Horarios:** Lunes a viernes 8:00–12:00 y 15:00–19:00; sábados 8:00–12:00.
-- **Instagram:** @academia_creativa_ec (footer, enlazado). No hay Facebook enlazado todavía — falta el handle oficial.
+- **Instagram:** @academia_creativa_ec (header y footer, enlazado).
+- **Facebook:** Academia de Arte y Música Creativa (header y footer, enlazado) — `https://www.facebook.com/people/Academia-de-Arte-y-Música-Creativa/61576514901192/`.
 - **Disciplinas:** Artes Sonoras (Guitarra, Canto, Violín, Batería, Piano) · Artes Visuales (Pintura, Dibujo, Escultura, Manualidades).
 - **Promoción:** descuento especial por inscripción de 2 estudiantes.
 - **Eslogan:** "Haz arte. Haz música. Hazlo tuyo." — tomado del flyer oficial, es el H1 del hero.
@@ -77,7 +78,7 @@ Academia-Creativa.png, Inspo.png  # Referencias que Daniela subió a la carpeta 
 - ✅ Repositorio Git inicializado y publicado en GitHub: **`PaginawebCreativa`** (privado), rama `main`, 1 commit inicial.
 - ✅ Carpeta local: `OneDrive\Documents\ISTE CIBERSEGURIDAD\PROYECTOS WEB\PaginawebCreativa`.
 - ⏳ **Railway: todavía no desplegado** — Daniela pidió explícitamente esperar antes de tocar esto. La guía completa de despliegue ya está en `README.md` (sección "Despliegue en Railway"): crear proyecto en railway.app → Deploy from GitHub repo → Railway detecta `package.json` y corre `npm start` → dominio HTTPS automático.
-- ⏳ Pendiente: testimonios reales, enlace de Facebook (falta handle), fotos/video reales para el hero, conectar analítica (hay un punto de enganche marcado como placeholder en `main.js`, función `initWhatsAppButtons`).
+- ⏳ Pendiente: testimonios reales, fotos/video reales para el hero, conectar analítica (hay un punto de enganche marcado como placeholder en `main.js`, función `initWhatsAppButtons`).
 
 ## Convenciones de trabajo
 
