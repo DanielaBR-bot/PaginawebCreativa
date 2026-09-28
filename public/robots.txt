@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://PENDIENTE-DOMINIO.up.railway.app/sitemap.xml
+Sitemap: https://creativa-academia-landing-production.up.railway.app/sitemap.xml
