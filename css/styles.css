@@ -585,14 +585,23 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 .discipline-emoji { font-size: 2.1rem; }
 .discipline-card h3 { font-size: 1.5rem; color: var(--purple-darker); }
 .pill-list { display: flex; flex-wrap: wrap; gap: 10px; }
-.pill-list li {
+.pill-list a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   background: var(--paper-alt);
   border: 1px solid rgba(75,63,174,0.14);
   color: var(--ink);
   font-weight: 600;
   font-size: 0.92rem;
-  padding: 9px 16px;
+  padding: 9px 18px;
   border-radius: var(--radius-pill);
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.pill-list a:hover, .pill-list a:focus-visible {
+  background: var(--purple-darker);
+  border-color: var(--purple-darker);
+  color: var(--white);
 }
 /* ---------- Testimonios ---------- */
 .testimonials {

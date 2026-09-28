@@ -35,12 +35,16 @@
 
   function initWhatsAppButtons() {
     var buttons = document.querySelectorAll(".js-whatsapp-cta");
-    var url = buildWhatsAppUrl(DEFAULT_MESSAGE);
 
     buttons.forEach(function (btn) {
-      btn.setAttribute("href", url);
+      var discipline = btn.getAttribute("data-discipline");
+      var message = discipline
+        ? "¡Hola Creativa Academia! 🎨🎵 Quiero información sobre las clases de " + discipline + ". ¿Podrían contarme los horarios disponibles?"
+        : DEFAULT_MESSAGE;
+
+      btn.setAttribute("href", buildWhatsAppUrl(message));
       btn.setAttribute("target", "_blank");
-      btn.setAttribute("rel", "noopener");
+      btn.setAttribute("rel", "noopener noreferrer");
       btn.addEventListener("click", function () {
         // Placeholder de analítica: aquí se podría conectar Google Analytics /
         // Meta Pixel para medir conversión por sección (data-source).
