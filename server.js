@@ -29,9 +29,12 @@ const PUBLIC_DIR = fs.existsSync(DIST_DIR) ? DIST_DIR : path.join(ROOT, "public"
 app.set("trust proxy", 1);
 
 // ---------- Redirección forzada a HTTPS ----------
-// Solo en producción: en local (npm run dev) no hay proxy ni HTTPS.
+// x-forwarded-proto solo lo pone un proxy real (Railway) delante del
+// servidor; en local (npm run dev) no hay proxy, así que esta cabecera
+// nunca llega y la redirección no se activa. No depende de NODE_ENV
+// porque Railway no la define por defecto.
 app.use((req, res, next) => {
-  if (process.env.NODE_ENV === "production" && req.headers["x-forwarded-proto"] === "http") {
+  if (req.headers["x-forwarded-proto"] === "http") {
     return res.redirect(301, "https://" + req.headers.host + req.originalUrl);
   }
   next();
