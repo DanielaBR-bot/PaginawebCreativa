@@ -4,11 +4,13 @@
   "description": "Landing page de Creativa Academia (arte y música para niños, jóvenes y adultos). Sitio estático: HTML5 + CSS + JavaScript vanilla, sin framework ni backend.",
   "private": true,
   "scripts": {
-    "start": "serve -s . -l ${PORT:-3000}",
-    "dev": "serve -s . -l 3000"
+    "start": "node server.js",
+    "dev": "node server.js"
   },
   "dependencies": {
-    "serve": "^14.2.1"
+    "compression": "^1.8.2",
+    "express": "^5.2.1",
+    "helmet": "^8.3.0"
   },
   "engines": {
     "node": ">=18"
