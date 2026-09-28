@@ -46,7 +46,11 @@ cbb7d6e | 2026-09-28 11:51 | feat: agregar paginas legales, 404 real y accesibil
 d7a2829 | 2026-09-28 12:32 | docs: actualizar README y agregar CHANGELOG de la fase de produccion
 6dd4f16 | 2026-09-28 13:26 | fix: quitar dependencia de NODE_ENV en la redireccion a HTTPS
 9a87509 | 2026-09-28 13:27 | chore: reemplazar marcador de dominio pendiente por el dominio real de Railway
+0327b9b | 2026-09-28 14:12 | docs: agregar EVIDENCIA.md para el informe academico
+56e32e9 | 2026-09-28 15:20 | perf: alojar las fuentes localmente en vez de pedirlas a Google Fonts
 ```
+
+Nota: `0327b9b` y `56e32e9` se hicieron después del primer despliegue, a pedido de Daniela al revisar el reporte de Lighthouse del sitio ya en producción (ver "Ajuste posterior al despliegue" en la sección 3).
 
 Reproducible con `git log --reverse --format="%h|%ad|%s" --date=format:"%Y-%m-%d %H:%M" 6f843dc..HEAD` desde la raíz del repositorio.
 
@@ -93,6 +97,9 @@ Ver sección 4 de este documento.
 - Corrección de un bug real antes de desplegar (NODE_ENV, ver sección 6).
 - Reemplazo del marcador `[PENDIENTE: dominio final]` por la URL real una vez confirmado el dominio de Railway.
 
+### Ajuste posterior al despliegue — fuentes locales (`56e32e9`)
+- Al revisar el reporte de Lighthouse contra el sitio *ya desplegado* (no `localhost`), Performance en escritorio resultó ser 55, no 88 — la latencia de red real hacia Google Fonts (dos idas y vueltas externas en cadena antes de poder pintar texto) no era visible en las pruebas anteriores, todas corridas contra `localhost`. Se alojaron las 7 fuentes usadas directamente en `public/assets/fonts/`. Resultado contra el sitio real: Performance escritorio 55 → 100, CLS 0.209 → 0, Performance móvil 86 → 99.
+
 ---
 
 ## 4. Resultados de pruebas (detalle completo en `TESTING.md`)
@@ -102,13 +109,15 @@ Ver sección 4 de este documento.
 | | Performance | Accesibilidad | Buenas prácticas | SEO |
 |---|---|---|---|---|
 | Móvil — antes | 78 | 97 | 100 | 92 |
-| **Móvil — después** | **90** | **100** | **100** | **100** |
+| Móvil — después (local) | 90 | 100 | 100 | 100 |
+| **Móvil — sitio real, con fuentes locales** | **99** | **100** | **100** | **100** |
 | Escritorio — antes | 89 | 93 | 100 | 92 |
-| Escritorio — después | 88 | 96 | 100 | 100 |
+| Escritorio — después (local) | 88 | 96 | 100 | 100 |
+| **Escritorio — sitio real, con fuentes locales** | **100** | 96 | 100 | 100 |
 
-Metodología: se comparó el commit `6f843dc` (estado justo antes de esta fase, levantado en un *worktree* de git aparte con el `serve` original) contra el estado final, con Lighthouse corrido localmente con los mismos parámetros contra ambas versiones.
+Metodología: se comparó el commit `6f843dc` (estado justo antes de esta fase, levantado en un *worktree* de git aparte con el `serve` original) contra el estado final, con Lighthouse corrido primero localmente. El número de "después (local)" resultó optimista: al correr Lighthouse contra el sitio *ya desplegado*, Performance en escritorio cayó a 55 por la latencia real hacia Google Fonts (invisible en `localhost`, donde no hay red de por medio) — se corrigió alojando las fuentes localmente (ver sección 3, "Ajuste posterior al despliegue"), y los números finales son los de la fila "sitio real".
 
-Métricas de carga (móvil): FCP 3.1 s → 2.7 s, LCP 4.1 s → 2.9 s, Speed Index 4.8 s → 2.7 s, peso total 697 KB → 529 KB.
+Métricas de carga (móvil, sitio real): FCP 1.1 s, LCP 1.6 s, CLS 0.
 
 Las dos métricas de escritorio que no llegaron a 90/100 (Performance 88, Accesibilidad 96) tienen causa identificada y documentada en `TESTING.md` §1 — no son regresiones introducidas sin explicación, sino consecuencias directas de decisiones tomadas a propósito (ver sección 5 de este documento).
 
@@ -150,6 +159,7 @@ Registro honesto de los tropiezos propios del proceso (no del código original),
 6. **Bug que hubiera afectado producción.** La redirección forzada a HTTPS en `server.js` dependía de `process.env.NODE_ENV === "production"`, una variable que Railway no define por defecto — la redirección nunca se habría activado en el sitio real. Se detectó revisando las variables de entorno reales del proyecto en Railway antes del primer despliegue, no después.
 7. **Incompatibilidad del script de build con OneDrive.** `scripts/build.js` fallaba (`EPERM`) al copiar carpetas, porque `fs.readdirSync(..., {withFileTypes:true})` reporta mal el tipo de archivo/carpeta dentro de rutas sincronizadas con OneDrive (por los *reparse points* de "Files On-Demand"). Se corrigió usando `fs.statSync` en su lugar.
 8. **Suposición desactualizada sobre el estado de Railway.** `CLAUDE.md` indicaba que Railway "todavía no estaba desplegado"; al momento de desplegar se encontró que ya existía un proyecto activo (con una versión vieja del sitio corriendo). Se le avisó a Daniela y se continuó con el proyecto existente en vez de crear uno nuevo. Lección: verificar el estado real de servicios externos antes de asumir lo que dice la documentación guardada.
+9. **Pruebas de rendimiento contra `localhost` en vez del sitio real.** Todas las pruebas de Lighthouse de esta fase se corrieron contra `localhost` (latencia de red ≈0), lo que dio un Performance de escritorio de 88 — optimista. Al pedir Daniela ver el reporte y correrlo contra el sitio ya desplegado, el número real resultó ser 55: la demora venía de pedir las fuentes a Google Fonts (dos idas y vueltas externas en cadena), invisible en `localhost` porque ahí no hay red real de por medio. Se corrigió alojando las fuentes localmente (`public/assets/fonts/`), subiendo Performance en escritorio a 100 en el sitio real. Lección: para métricas de rendimiento, la prueba que importa es contra la URL pública, no contra `localhost`.
 
 ## 7. Pendientes (`[PENDIENTE]`) que quedan abiertos
 
@@ -157,4 +167,4 @@ Registro honesto de los tropiezos propios del proceso (no del código original),
 - **Decidir si se agrega analítica** (hoy el sitio declara explícitamente en la política de privacidad que no usa cookies ni analítica).
 - **Dominio propio** (opcional) — el sitio usa el dominio gratuito de Railway; conectar uno propio es un paso aparte documentado en el README.
 - **Pruebas manuales** listadas al final de `TESTING.md`: WhatsApp desde un celular real, Safari/iOS, lector de pantalla real (VoiceOver/TalkBack), zoom al 200%, Rich Results Test de Google contra la URL ya real.
-- **Mejora opcional de escritorio** (no bloqueante): Performance en 88 y Accesibilidad en 96 en escritorio, ambos con causa raíz identificada en `TESTING.md` §1 — se puede perseguir el 90/100 con trabajo adicional (overrides de métricas de fuente para el CLS; rediseño menor del carrusel del hero para el punto de paginación) si se decide que vale la pena para la siguiente entrega.
+- **Mejora opcional de accesibilidad en escritorio** (no bloqueante): Accesibilidad quedó en 96 por una única excepción documentada (puntos de paginación del carrusel del hero, `TESTING.md` §1) — Performance ya llegó a 100 tras alojar las fuentes localmente.

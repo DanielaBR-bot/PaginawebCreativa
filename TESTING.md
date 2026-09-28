@@ -11,11 +11,13 @@ Metodología para el "antes": se levantó el commit `6f843dc` (el estado del sit
 | | Performance | Accesibilidad | Buenas prácticas | SEO |
 |---|---|---|---|---|
 | **Móvil — antes** | 78 | 97 | 100 | 92 |
-| **Móvil — después** | **90** | **100** | **100** | **100** |
+| **Móvil — después (28 sep, local)** | 90 | **100** | **100** | **100** |
+| **Móvil — después de alojar fuentes (28 sep, sitio real)** | **99** | **100** | **100** | **100** |
 | **Escritorio — antes** | 89 | 93 | 100 | 92 |
-| **Escritorio — después** | 88 | 96 | **100** | **100** |
+| **Escritorio — después (28 sep, local)** | 88 | 96 | **100** | **100** |
+| **Escritorio — después de alojar fuentes (28 sep, sitio real)** | **100** | 96 | **100** | **100** |
 
-Meta del proyecto: ≥90 en las 4 categorías. **Se cumple en 7 de 8** (móvil completo; en escritorio, Performance quedó en 88 y Accesibilidad en 96 — detalle abajo).
+Meta del proyecto: ≥90 en las 4 categorías. **Se cumple en 7 de 8** en el sitio ya desplegado — el único punto que queda por debajo es Accesibilidad en escritorio (96), con causa identificada y aceptada como excepción puntual (detalle abajo). Los reportes HTML completos, corridos contra el sitio real en producción, quedan enlazados como evidencia visual en el mensaje de esta conversación (interfaz completa de Lighthouse, no solo los números).
 
 ### Métricas de carga (móvil)
 
@@ -37,11 +39,13 @@ Meta del proyecto: ≥90 en las 4 categorías. **Se cumple en 7 de 8** (móvil c
 | Cumulative Layout Shift | 0.207 | 0.209 |
 | Peso total transferido | 1162 KB | 320 KB |
 
-**Por qué Performance en escritorio quedó en 88 y no ≥90:** el CLS de escritorio (~0.21, categoría "necesita mejora") ya estaba presente **antes** de esta fase (0.207) y no lo generó nada de lo que se tocó — es un efecto del cambio de fuente del sistema a Barlow/Barlow Condensed al terminar de cargar (`font-display: swap`, que el propio checklist de este proyecto pidió explícitamente para no bloquear el render con texto invisible). Con `swap`, el navegador **siempre** puede reacomodar el texto una vez llega la fuente real si sus métricas no calzan exactas con la fuente de respaldo — en escritorio, donde los títulos ocupan menos líneas, ese reacomodo mueve más contenido debajo. Dos caminos si quieres perseguir el ≥90 en escritorio más adelante: (a) usar `font-display: optional` (elimina el salto, pero en la rarísima conexión lenta la primera visita puede quedarse con la fuente de respaldo) o (b) generar overrides de métricas de fuente (`size-adjust`/`ascent-override`) para que el respaldo calce casi exacto con Barlow — más preciso, más trabajo. No lo apliqué porque cambia una decisión (`swap`) que pediste explícitamente en este mismo pedido; te lo dejo para decidir.
+**Por qué Performance en escritorio había quedado en 88 (resuelto):** el CLS de escritorio (~0.21) ya estaba presente **antes** de esta fase (0.207). La hipótesis inicial fue que la causa era `font-display: swap` en sí mismo (reacomodo de texto al llegar la fuente real). Al revisar el reporte de Lighthouse corrido contra el sitio *ya desplegado* (no contra `localhost`), el Performance real bajó a **55** en escritorio — ahí se identificó la causa real: las fuentes se pedían a Google Fonts, lo que exige dos idas y vueltas de red en cadena (CSS de `fonts.googleapis.com`, luego cada `.woff2` de `fonts.gstatic.com`) antes de poder pintar texto, y esa demora de red (invisible en `localhost`, donde no hay latencia) es lo que generaba el reacomodo tardío del texto. Se alojaron las 7 fuentes usadas (`public/assets/fonts/`) localmente con `@font-face`, sin tocar `font-display: swap`. Resultado contra el sitio real: **Performance escritorio 55 → 100, CLS 0.209 → 0, FCP 3.2s → 0.4s, LCP 3.2s → 0.5s**; **Performance móvil 86 → 99, CLS → 0**.
 
 **Por qué Accesibilidad en escritorio quedó en 96 (no 100):** el audit automático `target-size` de Lighthouse marca los puntos de paginación del carrusel de fotos del hero (`#hero-orb-dots`), que miden 6-16px visibles. Se evaluó agrandarlos a 44px reales (como se hizo con los puntos de testimonios, que sí llegan a 100) pero el hero tiene tarjetas decorativas con posición absoluta superpuestas en esa zona — agrandar el punto real desplaza el punto visible hacia abajo, hacia una tarjeta ("A tu propio ritmo"), tapándolo. Se dejó con un área táctil ampliada vía `::before` (funciona en un dispositivo real: el usuario sí puede tocar una zona de 44x44 centrada en el punto), pero Lighthouse no evalúa pseudo-elementos superpuestos para este chequeo puntual, así que sigue marcándolo. Es la única excepción a "áreas táctiles ≥44px" en todo el sitio; el resto (botón de menú, redes, disciplinas, puntos de testimonios) mide 44px reales.
 
-Reportes completos (JSON) generados durante esta fase — no se suben al repo por peso, pero se pueden regenerar con `npx lighthouse http://localhost:3000/ --view`.
+**Lección de metodología:** las primeras pruebas de esta fase se corrieron contra `localhost` (latencia de red ≈0), lo que ocultó por completo el problema real de Google Fonts — recién se detectó al correr Lighthouse contra el sitio *ya desplegado*. Para cualquier ajuste de rendimiento futuro, correr Lighthouse contra la URL real, no solo contra `localhost`.
+
+Reportes completos (JSON) generados durante esta fase — no se suben al repo por peso, pero se pueden regenerar con `npx lighthouse https://creativa-academia-landing-production.up.railway.app/ --view`.
 
 ---
 
