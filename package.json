@@ -4,8 +4,10 @@
   "description": "Landing page de Creativa Academia (arte y música para niños, jóvenes y adultos). Sitio estático: HTML5 + CSS + JavaScript vanilla, sin framework ni backend.",
   "private": true,
   "scripts": {
+    "build": "node scripts/build.js",
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "optimize-images": "node scripts/optimize-images.js"
   },
   "dependencies": {
     "compression": "^1.8.2",
@@ -16,6 +18,7 @@
     "node": ">=18"
   },
   "devDependencies": {
+    "esbuild": "^0.28.2",
     "sharp": "^0.35.5"
   }
 }

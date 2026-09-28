@@ -4,6 +4,7 @@
    de seguridad, caché y compresión. El sitio en sí sigue siendo
    HTML/CSS/JS estático — esto solo decide cómo Node lo entrega.
    ========================================================= */
+const fs = require("fs");
 const path = require("path");
 const express = require("express");
 const helmet = require("helmet");
@@ -13,9 +14,13 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const ROOT = __dirname;
 // Solo esta carpeta se sirve por HTTP. Todo lo demás en el repo
-// (server.js, package.json, scripts/, assets/originals sin comprimir,
+// (server.js, package.json, scripts/, originals/ sin comprimir,
 // documentación) queda fuera del alcance del servidor.
-const PUBLIC_DIR = path.join(ROOT, "public");
+// "npm run build" (esbuild) genera dist/ con CSS/JS minificados a
+// partir de public/; si existe, se sirve dist/ en vez de public/.
+// "npm run dev" no construye nada, así que sirve public/ tal cual.
+const DIST_DIR = path.join(ROOT, "dist");
+const PUBLIC_DIR = fs.existsSync(DIST_DIR) ? DIST_DIR : path.join(ROOT, "public");
 
 // Railway (y la mayoría de plataformas) terminan TLS en su proxy y
 // reenvían la petición por HTTP interno, indicando el protocolo
