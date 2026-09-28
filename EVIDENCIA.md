@@ -168,3 +168,79 @@ Registro honesto de los tropiezos propios del proceso (no del código original),
 - **Dominio propio** (opcional) — el sitio usa el dominio gratuito de Railway; conectar uno propio es un paso aparte documentado en el README.
 - **Pruebas manuales** listadas al final de `TESTING.md`: WhatsApp desde un celular real, Safari/iOS, lector de pantalla real (VoiceOver/TalkBack), zoom al 200%, Rich Results Test de Google contra la URL ya real.
 - **Mejora opcional de accesibilidad en escritorio** (no bloqueante): Accesibilidad quedó en 96 por una única excepción documentada (puntos de paginación del carrusel del hero, `TESTING.md` §1) — Performance ya llegó a 100 tras alojar las fuentes localmente.
+
+---
+
+## Iteración 2 — Optimización de rendimiento en escritorio
+
+Ocurrida el mismo día (28 de septiembre de 2026), después del primer despliegue, a partir de que Daniela pidió ver la interfaz real de Lighthouse (no solo los números resumidos) y la revisó ella misma.
+
+### 1. Cómo se detectó el problema
+
+Se generaron y publicaron dos reportes HTML de Lighthouse corridos contra el sitio ya desplegado (`https://creativa-academia-landing-production.up.railway.app`), uno para móvil y otro para escritorio, para que Daniela pudiera explorar la interfaz completa (no solo un resumen). Al revisar el de escritorio, Daniela reportó: **"veo que la página tiene 55 en performance en lighthouse de escritorio, porqué es tan bajo el valor?"**
+
+Ese 55 contrastaba con el 88 documentado en `TESTING.md` para escritorio — la diferencia es el objetivo que se había medido: el 88 se midió contra `localhost` (sin red real de por medio, latencia ≈0); el 55 lo detectó Daniela viendo el reporte corrido contra la URL pública real, con latencia de red real incluida. Es decir, el número que importa para el usuario final nunca se había medido hasta que Daniela pidió ver el reporte.
+
+### 2. Diagnóstico — qué auditorías de Lighthouse causaban la baja
+
+Del reporte de escritorio contra el sitio real (score de Performance 55/100), desglose por auditoría (peso en la categoría · puntaje individual · valor medido):
+
+| Auditoría | Peso | Puntaje | Valor |
+|---|---|---|---|
+| Largest Contentful Paint | 25% | 0.30 | 3.2 s |
+| Cumulative Layout Shift | 25% | 0.60 | 0.209 |
+| First Contentful Paint | 10% | **0.05** | 3.2 s |
+| Speed Index | 10% | 0.20 | 3.3 s |
+| Total Blocking Time | 25% | 1.00 | 0 ms |
+
+`server-response-time` (tiempo a primer byte) era de 180 ms — no es lo que explica el problema por sí solo. La causa raíz identificada fue la cadena de solicitudes antes de poder pintar texto: el HTML pedía el CSS de fuentes a `fonts.googleapis.com`, y ese CSS a su vez pedía cada archivo `.woff2` a `fonts.gstatic.com` — dos idas y vueltas a orígenes externos, en cadena y bloqueantes para el render, cuyo costo real de red solo aparece cuando se prueba contra un servidor de verdad (por eso no se había visto contra `localhost`).
+
+### 3. Cambios aplicados y commits
+
+| Commit | Hora | Mensaje |
+|---|---|---|
+| `56e32e9` | 2026-09-28 15:20 | `perf: alojar las fuentes localmente en vez de pedirlas a Google Fonts` |
+| `ab63d7a` | 2026-09-28 (después) | `docs: actualizar TESTING.md y EVIDENCIA.md con los resultados tras alojar fuentes` |
+
+Contenido del cambio (`56e32e9`):
+- Se descargaron los 7 archivos `.woff2` realmente usados (Barlow 400/500/600/700, Barlow Condensed 600/700/800; solo el subset "latin", suficiente para español) a `public/assets/fonts/`.
+- Se agregaron como `@font-face` locales en `public/css/styles.css`, con `font-display: swap` (sin cambiarlo — se mantuvo la misma decisión ya tomada, ver Iteración 1 §5).
+- Se agregó `<link rel="preload">` para las dos fuentes críticas sobre el pliegue (Barlow 400 del cuerpo, Barlow Condensed 700 del `H1`) en las 4 páginas HTML, reemplazando los `<link rel="preconnect">` y el `<link rel="stylesheet">` a Google Fonts.
+- Se quitaron `fonts.googleapis.com` y `fonts.gstatic.com` de la `Content-Security-Policy` en `server.js` (ya no hacen falta).
+- Verificación antes de desplegar: build local, `axe-core` y validación W3C CSS repetidos sin nuevas violaciones; captura de pantalla para confirmar que la tipografía se sigue viendo igual.
+
+### 4. Resultados antes/después (misma herramienta, misma URL desplegada)
+
+**Escritorio** (`--preset=desktop`):
+
+| Métrica | Antes | Después |
+|---|---|---|
+| **Performance** | **55** | **100** |
+| Accesibilidad | 96 | 96 *(sin cambio — excepción ya documentada, no relacionada con fuentes)* |
+| Buenas prácticas | 100 | 100 |
+| SEO | 100 | 100 |
+| First Contentful Paint | 3.2 s | 0.4 s |
+| Largest Contentful Paint | 3.2 s | 0.5 s |
+| Speed Index | 3.3 s | 0.7 s |
+| Cumulative Layout Shift | 0.209 | 0 |
+| Total Blocking Time | 0 ms | 0 ms |
+
+**Móvil** (`--form-factor=mobile`) — para confirmar que no empeoró al optimizar escritorio:
+
+| Métrica | Antes | Después |
+|---|---|---|
+| **Performance** | **86** | **99** |
+| Accesibilidad | 100 | 100 |
+| Buenas prácticas | 100 | 100 |
+| SEO | 100 | 100 |
+| First Contentful Paint | 3.3 s | 1.1 s |
+| Largest Contentful Paint | 3.3 s | 1.6 s |
+| Cumulative Layout Shift | — *(no se registró en detalle; el puntaje de Performance de 86 ya lo reflejaba)* | 0 |
+
+Móvil no solo no empeoró — también mejoró (86 → 99), porque la misma cadena de solicitudes a Google Fonts afectaba a ambos, solo que la curva de puntaje de móvil es más tolerante a la latencia y por eso el número original ya se veía "aceptable" sin serlo del todo.
+
+### 5. Errores o propuestas propias corregidas en esta iteración
+
+- **Diagnóstico previo incorrecto.** En la Iteración 1, el CLS de escritorio (0.207-0.209) se había explicado como un efecto **inherente** a `font-display: swap` — algo que solo se podría reducir cambiando esa decisión (a `font-display: optional`) o agregando overrides de métricas de fuente (`size-adjust`/`ascent-override`), ambas presentadas como trabajo adicional a evaluar después. Esa explicación resultó **incompleta**: la causa real no era `font-display: swap` en sí, sino la latencia de red hacia un origen externo (Google Fonts). Alojar las fuentes localmente eliminó el CLS por completo **sin tocar** `font-display: swap`, lo cual contradice la hipótesis original. Esto no lo corrigió Daniela directamente señalando el error técnico — lo destapó al pedir ver el reporte real y preguntar por el número, lo que forzó una investigación más profunda que la primera.
+- **Alcance ampliado por Daniela.** La pregunta que abrió esta iteración fue específicamente sobre el 55 de *escritorio*. Al aprobar el arreglo, Daniela aclaró explícitamente: *"lo importante es que el performance del sitio web sea optimizado tanto en su version mobil como de escritorio"* — ampliando el criterio de aceptación de "arreglar el número de escritorio" a "confirmar que ambas versiones queden optimizadas". Por eso el punto 4 de esta sección mide y reporta explícitamente los dos, en vez de limitarse a escritorio.
+- **Gap de la Iteración 1 que esta iteración deja en evidencia.** El error de fondo (medir rendimiento solo contra `localhost`) ya está registrado como punto 9 de la sección "Limitaciones y errores durante el desarrollo" — se repite aquí porque es, en los hechos, lo que dio origen a esta segunda iteración completa.
