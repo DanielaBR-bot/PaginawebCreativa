@@ -157,10 +157,21 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 }
 
 /* ---------- Header ---------- */
+/* El blur va en ::before (no en .site-header directamente) porque
+   backdrop-filter en un ancestro crea un containing block nuevo para
+   los descendientes position:fixed — rompía el menú móvil (#main-nav),
+   que quedaba encerrado en la caja del header en vez de cubrir la pantalla. */
 .site-header {
+  position: relative;
   background: rgba(255, 253, 249, 0.96);
-  backdrop-filter: blur(8px);
   border-bottom: 1px solid rgba(75, 63, 174, 0.08);
+}
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(8px);
+  z-index: -1;
 }
 .header-inner {
   display: flex;
