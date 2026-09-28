@@ -47,8 +47,10 @@ app.use(
       directives: {
         defaultSrc: ["'self'"],
         scriptSrc: ["'self'"],
-        styleSrc: ["'self'", "https://fonts.googleapis.com"],
-        fontSrc: ["'self'", "https://fonts.gstatic.com"],
+        // Las fuentes ahora se alojan localmente (public/assets/fonts) —
+        // ya no hace falta permitir fonts.googleapis.com/fonts.gstatic.com.
+        styleSrc: ["'self'"],
+        fontSrc: ["'self'"],
         imgSrc: ["'self'", "data:"],
         // El mapa de Google Maps va incrustado en un <iframe>.
         frameSrc: ["https://www.google.com"],
