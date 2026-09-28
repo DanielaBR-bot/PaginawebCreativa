@@ -446,6 +446,13 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 .hero-orb-slide.is-active { opacity: 1; }
 
 .hero-orb-dots { display: flex; align-items: center; justify-content: center; gap: 7px; }
+/* Punto visible pequeño a propósito (va sobre el hero, entre tarjetas
+   flotantes decorativas con posición absoluta: agrandar la caja real
+   del botón desplaza el punto visual hacia esas tarjetas). El área
+   táctil se amplía con un ::before superpuesto de 44x44 que no afecta
+   el tamaño/posición del botón en el flujo — funciona en dispositivos
+   reales, aunque el audit automático de Lighthouse no lo detecta por
+   no evaluar pseudo-elementos superpuestos (ver TESTING.md). */
 .hero-orb-dots button {
   position: relative;
   width: 6px; height: 6px;
@@ -455,7 +462,6 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
   background: rgba(75,63,174,0.25);
   transition: background 0.2s ease, width 0.2s ease;
 }
-/* Área táctil real de 44x44 aunque el punto visible sea pequeño. */
 .hero-orb-dots button::before {
   content: "";
   position: absolute;
@@ -673,23 +679,24 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 .testimonial-author strong { display: block; font-size: 0.92rem; }
 .testimonial-author span { display: block; font-size: 0.8rem; color: var(--ink-soft); }
 
-.testimonial-dots { display: flex; justify-content: center; gap: 8px; margin-top: 28px; }
+.testimonial-dots { display: flex; justify-content: center; margin-top: 28px; }
 .testimonial-dots button {
-  position: relative;
-  width: 9px; height: 9px;
-  border-radius: 50%;
+  width: 44px; height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: none;
-  background: rgba(75,63,174,0.2);
+  background: transparent;
   padding: 0;
 }
-.testimonial-dots button::before {
+.testimonial-dots button::after {
   content: "";
-  position: absolute;
-  top: 50%; left: 50%;
-  width: 44px; height: 44px;
-  transform: translate(-50%, -50%);
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: rgba(75,63,174,0.2);
+  transition: background 0.2s ease, width 0.2s ease, border-radius 0.2s ease;
 }
-.testimonial-dots button.is-active { background: var(--purple-darker); width: 24px; border-radius: 6px; }
+.testimonial-dots button.is-active::after { background: var(--purple-darker); width: 24px; border-radius: 6px; }
 @media (min-width: 700px) { .testimonial-dots { display: none; } }
 
 /* ---------- Pasos ---------- */
@@ -845,7 +852,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 }
 .social-icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; }
 .social-icon:hover { background: var(--pink); }
-.footer-col h3 {
+.footer-col h2 {
   font-family: var(--font-display);
   font-size: 1rem;
   letter-spacing: 1px;
