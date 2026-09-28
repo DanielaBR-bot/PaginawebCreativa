@@ -261,7 +261,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 .social-icon-header:hover, .social-icon-header:focus-visible { background: var(--purple-darker); color: var(--white); transform: translateY(-2px); }
 
 .nav-toggle {
-  width: 42px; height: 42px;
+  width: 44px; height: 44px;
   border-radius: 50%;
   border: none;
   background: var(--paper-alt);
@@ -447,12 +447,21 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 
 .hero-orb-dots { display: flex; align-items: center; justify-content: center; gap: 7px; }
 .hero-orb-dots button {
+  position: relative;
   width: 6px; height: 6px;
   border-radius: 50%;
   border: none;
   padding: 0;
   background: rgba(75,63,174,0.25);
   transition: background 0.2s ease, width 0.2s ease;
+}
+/* Área táctil real de 44x44 aunque el punto visible sea pequeño. */
+.hero-orb-dots button::before {
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 44px; height: 44px;
+  transform: translate(-50%, -50%);
 }
 .hero-orb-dots button.is-active { background: var(--purple-darker); width: 16px; border-radius: 6px; }
 .hero-card {
@@ -666,11 +675,19 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 
 .testimonial-dots { display: flex; justify-content: center; gap: 8px; margin-top: 28px; }
 .testimonial-dots button {
+  position: relative;
   width: 9px; height: 9px;
   border-radius: 50%;
   border: none;
   background: rgba(75,63,174,0.2);
   padding: 0;
+}
+.testimonial-dots button::before {
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 44px; height: 44px;
+  transform: translate(-50%, -50%);
 }
 .testimonial-dots button.is-active { background: var(--purple-darker); width: 24px; border-radius: 6px; }
 @media (min-width: 700px) { .testimonial-dots { display: none; } }
