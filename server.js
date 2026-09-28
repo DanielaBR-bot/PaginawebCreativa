@@ -12,6 +12,10 @@ const compression = require("compression");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const ROOT = __dirname;
+// Solo esta carpeta se sirve por HTTP. Todo lo demás en el repo
+// (server.js, package.json, scripts/, assets/originals sin comprimir,
+// documentación) queda fuera del alcance del servidor.
+const PUBLIC_DIR = path.join(ROOT, "public");
 
 // Railway (y la mayoría de plataformas) terminan TLS en su proxy y
 // reenvían la petición por HTTP interno, indicando el protocolo
@@ -77,13 +81,13 @@ const CLEAN_ROUTES = {
   "/terminos-y-condiciones": "terminos-y-condiciones.html",
 };
 Object.entries(CLEAN_ROUTES).forEach(([route, file]) => {
-  app.get(route, (req, res) => res.sendFile(path.join(ROOT, file)));
+  app.get(route, (req, res) => res.sendFile(path.join(PUBLIC_DIR, file)));
   app.get(route + ".html", (req, res) => res.redirect(301, route));
 });
 
 // ---------- Archivos estáticos ----------
 app.use(
-  express.static(ROOT, {
+  express.static(PUBLIC_DIR, {
     extensions: ["html"],
     setHeaders(res, filePath) {
       if (filePath.endsWith(".html")) {
@@ -100,7 +104,7 @@ app.use(
 
 // ---------- 404 real ----------
 app.use((req, res) => {
-  res.status(404).sendFile(path.join(ROOT, "404.html"));
+  res.status(404).sendFile(path.join(PUBLIC_DIR, "404.html"));
 });
 
 app.listen(PORT, () => {

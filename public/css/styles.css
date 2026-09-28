@@ -48,6 +48,7 @@ html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + var(-
 body, h1, h2, h3, p, ul, figure { margin: 0; }
 ul { padding: 0; list-style: none; }
 img { max-width: 100%; display: block; height: auto; }
+picture { display: block; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; cursor: pointer; }
 svg { fill: currentColor; }
@@ -436,11 +437,12 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 .hero-orb-slide {
   position: absolute;
   inset: 0;
+  display: block;
   width: 100%; height: 100%;
-  object-fit: cover;
   opacity: 0;
   transition: opacity 1s ease;
 }
+.hero-orb-slide img { width: 100%; height: 100%; object-fit: cover; }
 .hero-orb-slide.is-active { opacity: 1; }
 
 .hero-orb-dots { display: flex; align-items: center; justify-content: center; gap: 7px; }
@@ -531,6 +533,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 .gallery-item:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
+.gallery-item picture { display: block; width: 100%; height: 100%; }
 .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
 .gallery-item-lg { grid-row: span 2; aspect-ratio: auto; }
 .gallery-item-wide { grid-column: 1 / -1; aspect-ratio: 21 / 8; }
@@ -762,6 +765,24 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
   border: 4px solid rgba(255,255,255,0.25);
 }
 .cta-final-map iframe { width: 100%; height: 280px; border: 0; display: block; }
+.map-facade-btn {
+  width: 100%;
+  height: 280px;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.18), transparent 55%),
+    linear-gradient(135deg, var(--purple-dark), var(--purple-darker));
+  color: var(--white);
+  font-weight: 700;
+  font-size: 1rem;
+}
+.map-facade-btn svg { width: 34px; height: 34px; }
+.map-facade-btn:hover, .map-facade-btn:focus-visible { background: linear-gradient(135deg, var(--purple), var(--purple-dark)); }
 .cta-final-map-link {
   display: inline-block;
   margin-top: 14px;
@@ -781,7 +802,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
     text-align: left;
   }
   .cta-final-map-wrap { margin-top: 0; }
-  .cta-final-map iframe { height: 260px; }
+  .cta-final-map iframe, .map-facade-btn { height: 260px; }
 }
 
 /* ---------- Footer ---------- */

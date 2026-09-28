@@ -256,6 +256,26 @@
     if (yearEl) yearEl.textContent = new Date().getFullYear();
   }
 
+  /* ---------- Mapa de Google en fachada (carga solo al hacer clic) ----------
+     Evita pedir los recursos de Google Maps mientras el usuario no lo pide
+     explícitamente: reduce peso inicial de página y llamadas a terceros. */
+  function initMapFacade() {
+    var facade = document.getElementById("map-facade");
+    var btn = document.getElementById("map-facade-btn");
+    if (!facade || !btn) return;
+
+    btn.addEventListener("click", function () {
+      var iframe = document.createElement("iframe");
+      iframe.src = facade.getAttribute("data-map-src");
+      iframe.title = "Ubicación de Creativa Academia en el mapa";
+      iframe.loading = "eager";
+      iframe.referrerPolicy = "no-referrer-when-downgrade";
+      iframe.allowFullscreen = true;
+      facade.innerHTML = "";
+      facade.appendChild(iframe);
+    });
+  }
+
   /* ---------- Init ---------- */
   document.addEventListener("DOMContentLoaded", function () {
     initWhatsAppButtons();
@@ -266,5 +286,6 @@
     initHeaderScrollState();
     initHeaderOffsets();
     initFooterYear();
+    initMapFacade();
   });
 })();

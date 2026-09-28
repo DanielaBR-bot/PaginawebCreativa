@@ -65,7 +65,7 @@
   <div class="container header-inner">
     <a href="#top" class="brand" aria-label="Creativa Academia, ir al inicio">
       <span class="brand-icon">
-        <img src="assets/logo-icon.png" alt="" width="40" height="111" loading="eager">
+        <picture><source type="image/webp" srcset="assets/logo-icon.webp"><img src="assets/logo-icon.png" alt="" width="40" height="111" loading="eager"></picture>
       </span>
       <span class="brand-word">
         <span class="brand-word-main">reativa</span>
@@ -156,11 +156,26 @@
 
         <div class="hero-orb-wrap">
           <div class="hero-orb" id="hero-orb-gallery">
-            <img class="hero-orb-slide is-active" src="assets/foto-piano.jpg" alt="Alumna tomando clase de piano en Creativa Academia" loading="eager" decoding="async">
-            <img class="hero-orb-slide" src="assets/foto-pintura.jpg" alt="Alumna pintando un cuadro en el taller de artes visuales" loading="lazy" decoding="async">
-            <img class="hero-orb-slide" src="assets/foto-taller.jpg" alt="Instructoras trabajando con alumnas en el taller" loading="lazy" decoding="async">
-            <img class="hero-orb-slide" src="assets/foto-dibujo.jpg" alt="Alumno dibujando en el taller de artes visuales" loading="lazy" decoding="async">
-            <img class="hero-orb-slide" src="assets/foto-sala.jpg" alt="Espacio de Creativa Academia" loading="lazy" decoding="async">
+            <picture class="hero-orb-slide is-active">
+              <source type="image/webp" srcset="assets/foto-piano-480.webp 480w, assets/foto-piano-800.webp 800w" sizes="(min-width: 960px) 340px, 260px">
+              <img src="assets/foto-piano.jpg" width="900" height="1200" alt="Alumna tomando clase de piano en Creativa Academia" loading="eager" fetchpriority="high" decoding="async">
+            </picture>
+            <picture class="hero-orb-slide">
+              <source type="image/webp" srcset="assets/foto-pintura-480.webp 480w, assets/foto-pintura-800.webp 800w" sizes="(min-width: 960px) 340px, 260px">
+              <img src="assets/foto-pintura.jpg" width="900" height="1200" alt="Alumna pintando un cuadro en el taller de artes visuales" loading="lazy" decoding="async">
+            </picture>
+            <picture class="hero-orb-slide">
+              <source type="image/webp" srcset="assets/foto-taller-480.webp 480w, assets/foto-taller-800.webp 800w" sizes="(min-width: 960px) 340px, 260px">
+              <img src="assets/foto-taller.jpg" width="900" height="1200" alt="Instructoras trabajando con alumnas en el taller" loading="lazy" decoding="async">
+            </picture>
+            <picture class="hero-orb-slide">
+              <source type="image/webp" srcset="assets/foto-dibujo-480.webp 480w, assets/foto-dibujo-800.webp 800w" sizes="(min-width: 960px) 340px, 260px">
+              <img src="assets/foto-dibujo.jpg" width="900" height="1200" alt="Alumno dibujando en el taller de artes visuales" loading="lazy" decoding="async">
+            </picture>
+            <picture class="hero-orb-slide">
+              <source type="image/webp" srcset="assets/foto-sala-480.webp 480w, assets/foto-sala-800.webp 800w, assets/foto-sala-1200.webp 1200w" sizes="(min-width: 960px) 340px, 260px">
+              <img src="assets/foto-sala.jpg" width="1000" height="563" alt="Espacio de Creativa Academia" loading="lazy" decoding="async">
+            </picture>
           </div>
           <div class="hero-orb-dots" id="hero-orb-dots" role="tablist" aria-label="Seleccionar foto"></div>
         </div>
@@ -212,16 +227,28 @@
 
         <figure class="why-gallery reveal">
           <div class="gallery-item gallery-item-lg">
-            <img src="assets/foto-pintura.jpg" alt="Alumna pintando un cuadro en el taller de artes visuales de Creativa Academia" loading="lazy" decoding="async">
+            <picture>
+              <source type="image/webp" srcset="assets/foto-pintura-480.webp 480w, assets/foto-pintura-800.webp 800w" sizes="(min-width: 960px) 280px, (min-width: 600px) 45vw, 90vw">
+              <img src="assets/foto-pintura.jpg" width="900" height="1200" alt="Alumna pintando un cuadro en el taller de artes visuales de Creativa Academia" loading="lazy" decoding="async">
+            </picture>
           </div>
           <div class="gallery-item">
-            <img src="assets/foto-piano.jpg" alt="Alumna tomando clase de piano en Creativa Academia" loading="lazy" decoding="async">
+            <picture>
+              <source type="image/webp" srcset="assets/foto-piano-480.webp 480w, assets/foto-piano-800.webp 800w" sizes="(min-width: 960px) 280px, (min-width: 600px) 45vw, 90vw">
+              <img src="assets/foto-piano.jpg" width="900" height="1200" alt="Alumna tomando clase de piano en Creativa Academia" loading="lazy" decoding="async">
+            </picture>
           </div>
           <div class="gallery-item">
-            <img src="assets/foto-taller.jpg" alt="Instructoras trabajando con alumnas en el taller de Creativa Academia" loading="lazy" decoding="async">
+            <picture>
+              <source type="image/webp" srcset="assets/foto-taller-480.webp 480w, assets/foto-taller-800.webp 800w" sizes="(min-width: 960px) 280px, (min-width: 600px) 45vw, 90vw">
+              <img src="assets/foto-taller.jpg" width="900" height="1200" alt="Instructoras trabajando con alumnas en el taller de Creativa Academia" loading="lazy" decoding="async">
+            </picture>
           </div>
           <div class="gallery-item gallery-item-wide">
-            <img src="assets/foto-sala.jpg" alt="Espacio de Creativa Academia" loading="lazy" decoding="async">
+            <picture>
+              <source type="image/webp" srcset="assets/foto-sala-480.webp 480w, assets/foto-sala-800.webp 800w, assets/foto-sala-1200.webp 1200w" sizes="(min-width: 960px) 580px, 90vw">
+              <img src="assets/foto-sala.jpg" width="1000" height="563" alt="Espacio de Creativa Academia" loading="lazy" decoding="async">
+            </picture>
           </div>
         </figure>
       </div>
@@ -403,14 +430,11 @@
       </div>
 
       <div class="cta-final-map-wrap">
-        <div class="cta-final-map">
-          <iframe
-            src="https://www.google.com/maps?q=-1.6736379,-78.64679&z=17&output=embed"
-            title="Ubicación de Creativa Academia en el mapa"
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            allowfullscreen>
-          </iframe>
+        <div class="cta-final-map" id="map-facade" data-map-src="https://www.google.com/maps?q=-1.6736379,-78.64679&z=17&output=embed">
+          <button type="button" class="map-facade-btn" id="map-facade-btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C7.6 2 4 5.6 4 10c0 6 8 12 8 12s8-6 8-12c0-4.4-3.6-8-8-8Zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/></svg>
+            <span>Ver mapa interactivo</span>
+          </button>
         </div>
         <a href="https://maps.app.goo.gl/7hgSMAmmTK8wdBhH8" target="_blank" rel="noopener noreferrer" class="cta-final-map-link">Ver en Google Maps ↗</a>
       </div>
@@ -423,7 +447,7 @@
 <footer class="site-footer" id="contacto">
   <div class="container footer-inner">
     <div class="footer-brand">
-      <img src="assets/logo-blanco.png" alt="Creativa Academia" width="180" height="147" loading="lazy">
+      <picture><source type="image/webp" srcset="assets/logo-blanco.webp"><img src="assets/logo-blanco.png" alt="Creativa Academia" width="180" height="147" loading="lazy"></picture>
       <p>Donde las artes se unen</p>
       <div class="footer-social">
         <a href="https://www.facebook.com/people/Academia-de-Arte-y-M%C3%BAsica-Creativa/61576514901192/" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Facebook de Creativa Academia">
