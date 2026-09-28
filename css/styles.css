@@ -632,7 +632,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 .avatar {
   width: 42px; height: 42px;
   border-radius: 50%;
-  background: var(--avatar-bg, var(--purple));
+  background: var(--purple);
   color: var(--ink);
   display: flex;
   align-items: center;
@@ -642,6 +642,13 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
   font-size: 1.1rem;
   flex-shrink: 0;
 }
+/* Variantes de color (reemplazan el custom-property inline --avatar-bg:
+   una CSP estricta sin 'unsafe-inline' en style-src bloquea el atributo
+   style="" en línea, así que el color se fija por clase en vez de inline). */
+.avatar-purple { background: var(--purple); }
+.avatar-pink { background: var(--pink); }
+.avatar-mint { background: var(--mint); }
+.avatar-tan { background: var(--tan); }
 .testimonial-author strong { display: block; font-size: 0.92rem; }
 .testimonial-author span { display: block; font-size: 0.8rem; color: var(--ink-soft); }
 
@@ -811,6 +818,8 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
   font-size: 0.78rem;
   opacity: 0.7;
 }
+.footer-legal-links { display: flex; gap: 20px; flex-wrap: wrap; }
+.footer-legal-links a:hover, .footer-legal-links a:focus-visible { color: var(--mint); text-decoration: underline; }
 
 /* ---------- WhatsApp flotante ---------- */
 .whatsapp-float {
@@ -833,6 +842,43 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
   0%, 100% { box-shadow: 0 8px 24px rgba(0,0,0,0.25), 0 0 0 0 rgba(37,211,102,0.5); }
   50% { box-shadow: 0 8px 24px rgba(0,0,0,0.25), 0 0 0 10px rgba(37,211,102,0); }
 }
+
+/* ---------- Saltar al contenido ---------- */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 12px;
+  z-index: 1000;
+  background: var(--purple-darker);
+  color: var(--white);
+  padding: 12px 20px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  transition: top 0.2s ease;
+}
+.skip-link:focus { top: 12px; }
+
+/* ---------- Página 404 ---------- */
+.error-page { min-height: 60vh; display: flex; align-items: center; }
+.error-page-inner { text-align: center; }
+.error-page-ctas { justify-content: center; }
+
+/* ---------- Páginas legales (política de privacidad, términos) ---------- */
+.legal-content { max-width: 760px; }
+.legal-content .updated-note { color: var(--ink-soft); font-size: 0.92rem; margin-bottom: 40px; }
+.legal-content h2 {
+  font-size: 1.5rem;
+  margin-top: 44px;
+  margin-bottom: 14px;
+}
+.legal-content h2:first-of-type { margin-top: 0; }
+.legal-content p { margin-bottom: 14px; }
+.legal-content ul { margin-bottom: 14px; padding-left: 22px; }
+.legal-content ul li { list-style: disc; margin-bottom: 8px; }
+.legal-content li::marker { color: var(--pink-a11y); }
+.legal-content strong { color: var(--purple-darker); }
+.legal-content a { color: var(--pink-a11y); text-decoration: underline; text-underline-offset: 2px; }
+.legal-content a:hover, .legal-content a:focus-visible { color: var(--pink-a11y-dark); }
 
 /* ---------- Utilidades ---------- */
 ::selection { background: var(--pink); color: var(--white); }
